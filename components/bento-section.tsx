@@ -1,12 +1,12 @@
-import AiCodeReviews from "./bento/ai-code-reviews"
-import RealtimeCodingPreviews from "./bento/real-time-previews"
-import OneClickIntegrationsIllustration from "./bento/one-click-integrations-illustration"
-import MCPConnectivityIllustration from "./bento/mcp-connectivity-illustration" // Updated import
-import EasyDeployment from "./bento/easy-deployment"
-import ParallelCodingAgents from "./bento/parallel-agents" // Updated import
+import AiCodeReviews from "./bento/ai-code-reviews";
+import RealtimeCodingPreviews from "./bento/real-time-previews";
+import OneClickIntegrationsIllustration from "./bento/one-click-integrations-illustration";
+import MCPConnectivityIllustration from "./bento/mcp-connectivity-illustration"; // Updated import
+import EasyDeployment from "./bento/easy-deployment";
+import ParallelCodingAgents from "./bento/parallel-agents"; // Updated import
 
 const BentoCard = ({ title, description, Component }) => (
-  <div className="overflow-hidden rounded-2xl border border-white/20 flex flex-col justify-start items-start relative">
+  <div className="overflow-hidden border-white/20 flex flex-col justify-start items-start relative rounded-2xl border">
     {/* Background with blur effect */}
     <div
       className="absolute inset-0 rounded-2xl"
@@ -31,41 +31,43 @@ const BentoCard = ({ title, description, Component }) => (
       <Component />
     </div>
   </div>
-)
+);
 
 export function BentoSection() {
   const cards = [
     {
-      title: "AI-powered code reviews.",
-      description: "Get real-time, smart suggestions for cleaner code.",
+      title: "Integração com N8N",
+      description: "Conecte facilmente com CRM, WhatsApp.",
       Component: AiCodeReviews,
     },
     {
-      title: "Real-time coding previews",
-      description: "Chat, collaborate, and instantly preview changes together.",
+      title: "Acompanhamento em tempo real",
+      description:
+        "Visualize cada interação, mensagem enviada e lead capturado.",
       Component: RealtimeCodingPreviews,
     },
     {
-      title: "One-click integrations",
-      description: "Easily connect your workflow with popular dev tools.",
+      title: "Integração com um clique",
+      description: "Conecte facilmente seu workflow com ferramentas populares.",
       Component: OneClickIntegrationsIllustration,
     },
     {
-      title: "Flexible MCP connectivity",
-      description: "Effortlessly manage and configure MCP server access.",
+      title: "Integrações ilimitadas",
+      description: "Integre-se com qualquer ferramenta usada no seu negócio.",
       Component: MCPConnectivityIllustration, // Updated component
     },
     {
-      title: "Launch parallel coding agents", // Swapped position
-      description: "Solve complex problems faster with multiple AI agents.",
+      title: "Agentes especializados por segmento", // Swapped position
+      description: "Crie agentes específicos para cada segmento de mercado.",
       Component: ParallelCodingAgents, // Updated component
     },
     {
-      title: "Deployment made easy", // Swapped position
-      description: "Go from code to live deployment on Vercel instantly.",
+      title: "Implantação sem complicações", // Swapped position
+      description:
+        "Escale fácil e rapidamente, sem custos altos ou processos complicados.",
       Component: EasyDeployment,
     },
-  ]
+  ];
 
   return (
     <section className="w-full px-5 flex flex-col justify-center items-center overflow-visible bg-transparent">
@@ -74,11 +76,12 @@ export function BentoSection() {
         <div className="self-stretch py-8 md:py-14 flex flex-col justify-center items-center gap-2 z-10">
           <div className="flex flex-col justify-start items-center gap-4">
             <h2 className="w-full max-w-[655px] text-center text-foreground text-4xl md:text-6xl font-semibold leading-tight md:leading-[66px]">
-              Empower Your Workflow with AI
+              Conecte, Automatize e Converta com IA
             </h2>
             <p className="w-full max-w-[600px] text-center text-muted-foreground text-lg md:text-xl font-medium leading-relaxed">
-              Ask your AI Agent for real-time collaboration, seamless integrations, and actionable insights to
-              streamline your operations.
+              Integre-se perfeitamente às suas plataformas existentes para
+              capturar leads, acionar conversas inteligentes e nutrir prospects
+              através de workflows automatizados que nunca param.
             </p>
           </div>
         </div>
@@ -89,5 +92,5 @@ export function BentoSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

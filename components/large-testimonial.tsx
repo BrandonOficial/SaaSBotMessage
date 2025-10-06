@@ -1,4 +1,4 @@
-import Image from "next/image"
+import Image from "next/image";
 
 export function LargeTestimonial() {
   return (
@@ -9,11 +9,11 @@ export function LargeTestimonial() {
             <div className="flex-1 px-4 py-8 md:px-12 lg:px-20 md:py-8 lg:py-10 overflow-hidden rounded-lg flex flex-col justify-center items-center gap-6 md:gap-8 lg:gap-11">
               <div className="w-full max-w-[1024px] text-center text-foreground leading-7 md:leading-10 lg:leading-[64px] font-medium text-lg md:text-3xl lg:text-6xl">
                 {
-                  "Pointer's real-time previews cut our debugging time in half and made coding collaboratively actually enjoyable."
+                  "Os leads que chegam para o time de vendas já estão qualificados e aquecidos."
                 }
               </div>
               <div className="flex justify-start items-center gap-5">
-                <Image
+                {/*<Image
                   src="/images/guillermo-rauch.png"
                   alt="Guillermo Rauch avatar"
                   width={48}
@@ -21,15 +21,20 @@ export function LargeTestimonial() {
                   className="w-12 h-12 relative rounded-full"
                   style={{ border: "1px solid rgba(0, 0, 0, 0.08)" }}
                 />
+                 eslint-disable-next-line @next/next/no-img-element 
                 <div className="flex flex-col justify-start items-start">
-                  <div className="text-foreground text-base font-medium leading-6">Guillermo Rauch</div>
-                  <div className="text-muted-foreground text-sm font-normal leading-6">{"CEO, Vercel"}</div>
-                </div>
+                  <div className="text-foreground text-base font-medium leading-6">
+                    Eduardo Rios
+                  </div>
+                  <div className="text-muted-foreground text-sm font-normal leading-6">
+                    {"CEO, LeadVera"}
+                  </div>
+                </div>*/}
               </div>
             </div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }

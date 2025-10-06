@@ -1,10 +1,12 @@
-import type React from "react"
+import type React from "react";
 
 interface ParallelCodingAgentsProps {
-  className?: string
+  className?: string;
 }
 
-const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className = "" }) => {
+const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({
+  className = "",
+}) => {
   // Theme-based CSS variables using global theme
   const themeVars = {
     "--pca-background-color": "hsl(var(--background))",
@@ -19,7 +21,7 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
     "--pca-container-background": "hsl(var(--card) / 0.4)",
     "--pca-container-gradient-start": "hsl(var(--card) / 0.4)",
     "--pca-container-gradient-end": "transparent",
-  }
+  };
 
   const CheckmarkIcon = () => (
     <svg
@@ -38,7 +40,7 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
         opacity="0.8"
       />
     </svg>
-  )
+  );
 
   const RefreshIcon = () => (
     <svg
@@ -65,7 +67,7 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
         opacity="0.8"
       />
     </svg>
-  )
+  );
 
   const SparklesIcon = () => (
     <svg
@@ -84,31 +86,31 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
         opacity="0.8"
       />
     </svg>
-  )
+  );
 
   const agents = [
     {
       icon: <CheckmarkIcon />,
-      title: "Update buttons",
-      tokens: "12k tokens",
-      model: "o3",
+      title: "Capturar Lead",
+      tokens: "tokens ilimitados",
+      model: "Gemini",
       branch: "pointer/update-pain...",
     },
     {
       icon: <RefreshIcon />,
-      title: "Fix sanity issue",
-      tokens: "12k tokens",
+      title: "Corrigir problema de integridade",
+      tokens: "tokens ilimitados",
       model: "claude-sonnet-4",
       branch: "pointer/update-pain...",
     },
     {
       icon: <SparklesIcon />,
-      title: "Plan for seamless toast",
-      tokens: "30k tokens",
-      model: "o3",
+      title: "Planeje perfeitamente sua IA",
+      tokens: "tokens ilimitados",
+      model: "Gemini",
       branch: "pointer/update-pain...",
     },
-  ]
+  ];
 
   return (
     <div
@@ -141,7 +143,8 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
           padding: "20px",
           height: "100%",
           width: "calc(100% - 48px)", // Adjusted width for 24px margin on both sides
-          background: "linear-gradient(180deg, hsl(var(--primary) / 0.05) 0%, transparent 100%)", // Updated background property
+          background:
+            "linear-gradient(180deg, hsl(var(--primary) / 0.05) 0%, transparent 100%)", // Updated background property
           backdropFilter: "blur(16px)",
           borderRadius: "9.628px",
           border: "0.802px solid hsl(var(--border))",
@@ -253,7 +256,7 @@ const ParallelCodingAgents: React.FC<ParallelCodingAgentsProps> = ({ className =
         ))}
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default ParallelCodingAgents
+export default ParallelCodingAgents;
