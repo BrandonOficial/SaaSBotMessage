@@ -96,24 +96,4 @@ Para colocar o Pointer AI para rodar na sua máquina, siga estes passos.
 
 Pronto! Agora você pode acessar a aplicação em [http://localhost:3000](http://localhost:3000).
 
-## 📁 Estrutura do Projeto
-/SaaSBotMessage
-├── /app
-│   ├── /api          # Rotas de API (autenticação)
-│   ├── /dashboard    # Página do dashboard (protegida)
-│   ├── /login        # Página de login
-│   ├── /register     # Página de registro
-│   ├── layout.tsx    # Layout principal da aplicação
-│   └── page.tsx      # Landing Page
-├── /components
-│   ├── /ui           # Componentes reutilizáveis do Shadcn/UI
-│   ├── /bento        # Componentes do grid da landing page
-│   └── ...           # Outros componentes específicos
-├── /contexts
-│   └── AuthContext.tsx # Contexto de autenticação
-├── /lib
-│   ├── db.ts         # Configuração da conexão com o banco de dados
-│   └── utils.ts      # Funções utilitárias
-└── ...               # Outros arquivos de configuração
-
 O projeto segue a estrutura do App Router do Next.js, com uma organização clara e modular:
