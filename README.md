@@ -1,6 +1,6 @@
 # Pointer AI - Automação Inteligente para Atendimento
 
-![Prévia do Dashboard](<img width="1899" height="1080" alt="image" src="https://github.com/user-attachments/assets/f474b0bf-3cd6-43bf-b13f-6eff4872ca34" />
+![Prévia do Dashboard]([<img width="1899" height="1080" alt="image" src="https://github.com/user-attachments/assets/f474b0bf-3cd6-43bf-b13f-6eff4872ca34" />](https://i.imgur.com/2MOclLn.png)
 )
 
 ## 🚀 Sobre o Projeto
