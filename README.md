@@ -1,6 +1,7 @@
 # Pointer AI - Automação Inteligente para Atendimento
 
-![Prévia do Dashboard](brandonoficial/saasbotmessage/SaaSBotMessage-4734558d1dfdc0c9c15642786578aa51ef35987b/public/images/dashboard-preview.png)
+![Prévia do Dashboard](<img width="1899" height="1080" alt="image" src="https://github.com/user-attachments/assets/f474b0bf-3cd6-43bf-b13f-6eff4872ca34" />
+)
 
 ## 🚀 Sobre o Projeto
 
