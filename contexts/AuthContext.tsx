@@ -1,6 +1,13 @@
+// contexts/AuthContext.tsx
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  useEffect,
+} from "react";
 import { useRouter } from "next/navigation";
 import { User, AuthContextType, LoginResult } from "@/types/auth";
 
@@ -16,6 +23,16 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
+  // Efeito para verificar o token no carregamento inicial (opcional, mas bom para persistência)
+  useEffect(() => {
+    const token = localStorage.getItem("authToken");
+    const userData = localStorage.getItem("userData");
+    if (token && userData) {
+      setUser(JSON.parse(userData));
+      setIsAuthenticated(true);
+    }
+  }, []);
+
   const login = async (
     email: string,
     password: string
@@ -23,38 +40,47 @@ export function AuthProvider({ children }: AuthProviderProps) {
     setIsLoading(true);
 
     try {
-      // SIMULAÇÃO - Substitua pela chamada real da API
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-      // Validação simulada
-      if (email === "admin@example.com" && password === "123456") {
-        const userData: User = {
-          id: 1,
-          name: "Usuário Teste",
-          email: email,
-        };
+      const data = await response.json();
 
-        setUser(userData);
-        setIsAuthenticated(true);
-
-        // Redirecionar para dashboard
-        router.push("/dashboard");
-        return { success: true };
-      } else {
-        throw new Error("Email ou senha inválidos");
+      if (!response.ok) {
+        // Lança um erro com a mensagem da API ou uma mensagem padrão
+        throw new Error(data.error || "Erro ao tentar fazer login.");
       }
+
+      // Login bem-sucedido
+      setUser(data.user);
+      setIsAuthenticated(true);
+
+      // Armazena o token e os dados do usuário para persistir a sessão
+      localStorage.setItem("authToken", data.token);
+      localStorage.setItem("userData", JSON.stringify(data.user));
+
+      router.push("/dashboard");
+      return { success: true };
     } catch (error) {
-      setIsLoading(false);
       return {
         success: false,
         error: error instanceof Error ? error.message : "Erro desconhecido",
       };
+    } finally {
+      setIsLoading(false);
     }
   };
 
   const logout = () => {
     setUser(null);
     setIsAuthenticated(false);
+    // Limpa os dados da sessão do localStorage
+    localStorage.removeItem("authToken");
+    localStorage.removeItem("userData");
     router.push("/login");
   };
 

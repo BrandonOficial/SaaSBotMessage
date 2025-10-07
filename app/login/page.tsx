@@ -1,11 +1,39 @@
+// app/login/page.tsx
+"use client"; // Necessário para usar hooks como useEffect e useAuth
+
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/contexts/AuthContext";
 import LoginForm from "@/components/loginForm";
 import Link from "next/link";
 import { Logo } from "@/components/new-hero-section";
+import { Loader2 } from "lucide-react";
 
 export default function LoginPage() {
+  const { isAuthenticated, isLoading } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    // Se o usuário já estiver autenticado e o contexto não estiver carregando,
+    // redireciona para o dashboard.
+    if (isAuthenticated && !isLoading) {
+      router.push("/dashboard");
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  // Mostra um loading enquanto o AuthContext verifica o estado de autenticação
+  if (isLoading || isAuthenticated) {
+    return (
+      <div className="min-h-screen bg-background flex items-center justify-center">
+        <Loader2 className="w-8 h-8 animate-spin text-primary" />
+      </div>
+    );
+  }
+
+  // Se não estiver autenticado, mostra a página de login
   return (
     <div className="min-h-screen bg-background relative overflow-hidden flex flex-col items-center justify-center p-4">
-      {/* Background effects matching landing page */}
+      {/* Background effects */}
       <div
         aria-hidden
         className="z-[1] absolute inset-0 pointer-events-none isolate opacity-20"
@@ -14,19 +42,16 @@ export default function LoginPage() {
         <div className="h-[80rem] absolute right-0 top-0 w-56 rotate-45 rounded-full bg-[radial-gradient(50%_50%_at_50%_50%,hsla(0,85%,60%,.08)_0,hsla(0,85%,60%,.03)_80%,transparent_100%)]" />
       </div>
 
-      {/* Logo at top */}
       <div className="absolute top-8 left-8 z-10">
         <Link href="/">
           <Logo />
         </Link>
       </div>
 
-      {/* Login form */}
       <div className="relative z-10">
         <LoginForm />
       </div>
 
-      {/* Back to home link */}
       <div className="relative z-10 mt-6">
         <Link
           href="/"

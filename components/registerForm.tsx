@@ -1,28 +1,47 @@
-// components/loginForm.tsx
+// components/registerForm.tsx
 "use client";
 
 import { useState, type FormEvent } from "react";
-import Link from "next/link";
-import { Eye, EyeOff, Lock, Mail, Loader2 } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
+import { Eye, EyeOff, Lock, Mail, User, Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
-export default function LoginForm() {
+export default function RegisterForm() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
-
-  const { login, isLoading } = useAuth();
+  const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleSubmit = async (e: FormEvent) => {
     e.preventDefault();
     setError("");
+    setIsLoading(true);
 
-    const result = await login(email, password);
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ name, email, password }),
+      });
 
-    if (!result.success && result.error) {
-      setError(result.error);
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Falha ao registrar.");
+      }
+
+      // Sucesso! Redireciona para o login com uma mensagem (opcional)
+      router.push("/login"); // Você pode adicionar uma query "?registered=true" para mostrar um toast de sucesso
+    } catch (error) {
+      setError(
+        error instanceof Error ? error.message : "Ocorreu um erro inesperado."
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -30,12 +49,11 @@ export default function LoginForm() {
     <div className="w-full max-w-md">
       <div className="bg-card backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-border">
         <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-primary to-primary-dark rounded-2xl mb-4">
-            <Lock className="w-8 h-8 text-primary-foreground" />
-          </div>
-          <h1 className="text-3xl font-bold text-foreground mb-2">Bem-vindo</h1>
+          <h1 className="text-3xl font-bold text-foreground mb-2">
+            Crie sua Conta
+          </h1>
           <p className="text-muted-foreground">
-            Entre na sua conta para continuar
+            Rápido e fácil, comece agora mesmo.
           </p>
         </div>
 
@@ -46,6 +64,27 @@ export default function LoginForm() {
         )}
 
         <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label
+              htmlFor="name"
+              className="block text-sm font-medium text-foreground mb-2"
+            >
+              Nome Completo
+            </label>
+            <div className="relative">
+              <User className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-muted-foreground-light" />
+              <input
+                id="name"
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="w-full pl-10 pr-4 py-3 bg-muted border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition text-foreground placeholder:text-muted-foreground-light"
+                placeholder="Seu nome"
+                required
+                disabled={isLoading}
+              />
+            </div>
+          </div>
           <div>
             <label
               htmlFor="email"
@@ -62,12 +101,11 @@ export default function LoginForm() {
                 onChange={(e) => setEmail(e.target.value)}
                 className="w-full pl-10 pr-4 py-3 bg-muted border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition text-foreground placeholder:text-muted-foreground-light"
                 placeholder="seu@email.com"
+                required
                 disabled={isLoading}
-                autoComplete="off" // Correção aqui
               />
             </div>
           </div>
-
           <div>
             <label
               htmlFor="password"
@@ -84,8 +122,8 @@ export default function LoginForm() {
                 onChange={(e) => setPassword(e.target.value)}
                 className="w-full pl-10 pr-12 py-3 bg-muted border border-border rounded-lg focus:ring-2 focus:ring-primary focus:border-transparent transition text-foreground placeholder:text-muted-foreground-light"
                 placeholder="••••••••"
+                required
                 disabled={isLoading}
-                autoComplete="off" // E aqui
               />
               <button
                 type="button"
@@ -101,26 +139,6 @@ export default function LoginForm() {
             </div>
           </div>
 
-          <div className="flex items-center justify-between">
-            <label className="flex items-center cursor-pointer">
-              <input
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="w-4 h-4 text-primary border-border rounded focus:ring-primary bg-muted"
-              />
-              <span className="ml-2 text-sm text-muted-foreground">
-                Lembrar-me
-              </span>
-            </label>
-            <Link
-              href="#"
-              className="text-sm text-primary hover:text-primary-light font-medium transition"
-            >
-              Esqueci a senha
-            </Link>
-          </div>
-
           <button
             type="submit"
             disabled={isLoading}
@@ -129,25 +147,13 @@ export default function LoginForm() {
             {isLoading ? (
               <>
                 <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                Entrando...
+                Criando conta...
               </>
             ) : (
-              "Entrar"
+              "Registrar"
             )}
           </button>
         </form>
-
-        <div className="mt-8 text-center text-sm">
-          <p className="text-muted-foreground">
-            Não tem uma conta?{" "}
-            <Link
-              href="/register"
-              className="font-semibold text-primary hover:text-primary-light transition"
-            >
-              Crie agora
-            </Link>
-          </p>
-        </div>
       </div>
     </div>
   );
