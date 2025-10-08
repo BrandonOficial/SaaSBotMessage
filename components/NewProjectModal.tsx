@@ -2,16 +2,20 @@
 "use client";
 
 import { useState } from "react";
-import { X, Plus, MessageCircle } from "lucide-react";
+import { X, Plus, MessageCircle, Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+// Importe o useAuth para acessar informações do usuário logado
+import { useAuth } from "@/contexts/AuthContext";
 
 interface NewProjectModalProps {
   isOpen: boolean;
   onClose: () => void;
 }
 
-// Lógica do Modal isolada em seu próprio componente
 export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
+  const { user } = useAuth(); // Pegamos o usuário do nosso contexto de autenticação
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     tool: "whatsapp",
     number: "",
@@ -22,12 +26,52 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
     return null;
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log("Novo projeto criado:", formData);
-    // Lógica para salvar o projeto...
+  const handleClose = () => {
     onClose();
-    setFormData({ tool: "whatsapp", number: "", prompt: "" }); // Reseta o formulário
+    // Limpa o formulário e erros ao fechar
+    setError("");
+    setFormData({ tool: "whatsapp", number: "", prompt: "" });
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
+
+    if (!user) {
+      setError("Você precisa estar logado para criar um projeto.");
+      setIsLoading(false);
+      return;
+    }
+
+    try {
+      // O token JWT é necessário para autenticar a requisição na API
+      const token = localStorage.getItem("authToken");
+
+      const response = await fetch("/api/projects", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Enviando o token no header
+        },
+        body: JSON.stringify(formData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Falha ao criar o projeto.");
+      }
+
+      console.log("Novo projeto criado com sucesso:", data);
+      handleClose(); // Fecha e reseta o modal
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : "Ocorreu um erro inesperado."
+      );
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -49,12 +93,19 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
             </div>
           </div>
           <button
-            onClick={onClose}
+            onClick={handleClose}
             className="p-2 rounded-lg hover:bg-muted transition-colors"
           >
             <X className="w-5 h-5 text-muted-foreground" />
           </button>
         </div>
+
+        {/* Exibição de Erro */}
+        {error && (
+          <div className="p-3 mx-6 mt-4 text-sm bg-destructive/10 border border-destructive/30 rounded-lg text-destructive">
+            {error}
+          </div>
+        )}
 
         {/* Formulário */}
         <form onSubmit={handleSubmit} className="p-6 space-y-6">
@@ -70,6 +121,7 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
                   setFormData({ ...formData, tool: e.target.value })
                 }
                 className="w-full pl-11 pr-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-foreground"
+                disabled={isLoading}
               >
                 <option value="whatsapp">WhatsApp</option>
                 <option value="telegram">Telegram</option>
@@ -91,6 +143,7 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
               }
               className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all text-foreground placeholder:text-muted-foreground"
               required
+              disabled={isLoading}
             />
           </div>
 
@@ -107,6 +160,7 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
               rows={4}
               className="w-full px-4 py-3 bg-background border border-border rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all resize-none text-foreground placeholder:text-muted-foreground"
               required
+              disabled={isLoading}
             />
             <p className="text-xs text-muted-foreground">
               Exemplo: "Atenda os clientes de forma cordial e profissional..."
@@ -116,18 +170,26 @@ export function NewProjectModal({ isOpen, onClose }: NewProjectModalProps) {
           <div className="flex gap-3 pt-4">
             <Button
               type="button"
-              onClick={onClose}
+              onClick={handleClose}
               variant="outline"
               className="flex-1 h-11"
+              disabled={isLoading}
             >
               Cancelar
             </Button>
             <Button
               type="submit"
               className="flex-1 h-11 bg-primary hover:bg-primary/90 shadow-lg shadow-primary/20"
+              disabled={isLoading}
             >
-              <Plus className="w-4 h-4 mr-2" />
-              Criar Projeto
+              {isLoading ? (
+                <Loader2 className="w-5 h-5 animate-spin" />
+              ) : (
+                <>
+                  <Plus className="w-4 h-4 mr-2" />
+                  Criar Projeto
+                </>
+              )}
             </Button>
           </div>
         </form>
