@@ -7,7 +7,7 @@ const testimonials = [
     name: "Annette Black",
     company: "Sony",
     avatar: "/images/avatars/annette-black.png",
-    type: "large-teal",
+    type: "large-teal" as const,
   },
   {
     quote:
@@ -15,15 +15,15 @@ const testimonials = [
     name: "Dianne Russell",
     company: "McDonald's",
     avatar: "/images/avatars/dianne-russell.png",
-    type: "small-dark",
+    type: "small-dark" as const,
   },
   {
     quote:
-      "Pointer’s multi-agent coding feature has been a game changer. We’re fixing complex bugs in hours instead of spending entire sprints on them.",
+      "Pointer's multi-agent coding feature has been a game changer. We're fixing complex bugs in hours instead of spending entire sprints on them.",
     name: "Cameron Williamson",
     company: "IBM",
     avatar: "/images/avatars/cameron-williamson.png",
-    type: "small-dark",
+    type: "small-dark" as const,
   },
   {
     quote:
@@ -31,23 +31,23 @@ const testimonials = [
     name: "Robert Fox",
     company: "MasterCard",
     avatar: "/images/avatars/robert-fox.png",
-    type: "small-dark",
+    type: "small-dark" as const,
   },
   {
     quote:
-      "We started with the free plan just to test it out, but within a week we upgraded to Pro. Now, we can’t imagine coding without it",
+      "We started with the free plan just to test it out, but within a week we upgraded to Pro. Now, we can't imagine coding without it",
     name: "Darlene Robertson",
     company: "Ferrari",
     avatar: "/images/avatars/darlene-robertson.png",
-    type: "small-dark",
+    type: "small-dark" as const,
   },
   {
     quote:
-      "Collaborative coding feels effortless now. With Pointer’s real-time previews, pair programming has become faster and more productive.",
+      "Collaborative coding feels effortless now. With Pointer's real-time previews, pair programming has become faster and more productive.",
     name: "Cody Fisher",
     company: "Apple",
     avatar: "/images/avatars/cody-fisher.png",
-    type: "small-dark",
+    type: "small-dark" as const,
   },
   {
     quote:
@@ -55,11 +55,25 @@ const testimonials = [
     name: "Albert Flores",
     company: "Louis Vuitton",
     avatar: "/images/avatars/albert-flores.png",
-    type: "large-light",
+    type: "large-light" as const,
   },
 ];
 
-const TestimonialCard = ({ quote, name, company, avatar, type }) => {
+interface TestimonialCardProps {
+  quote: string;
+  name: string;
+  company: string;
+  avatar: string;
+  type: "large-teal" | "small-dark" | "large-light";
+}
+
+const TestimonialCard = ({
+  quote,
+  name,
+  company,
+  avatar,
+  type,
+}: TestimonialCardProps) => {
   const isLargeCard = type.startsWith("large");
   const avatarSize = isLargeCard ? 48 : 36;
   const avatarBorderRadius = isLargeCard

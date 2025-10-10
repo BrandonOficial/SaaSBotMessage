@@ -28,7 +28,11 @@ export async function POST(request: Request) {
     return NextResponse.json(newUser, { status: 201 });
   } catch (error) {
     console.error(error);
-    if (error.code === "23505") {
+    if (
+      error instanceof Error &&
+      "code" in error &&
+      (error as any).code === "23505"
+    ) {
       return NextResponse.json(
         { error: "Este e-mail já está em uso." },
         { status: 409 }

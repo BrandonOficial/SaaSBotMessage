@@ -28,7 +28,7 @@ html {
 }
         `}</style>
       </head>
-      <body>
+      <body suppressHydrationWarning>
         <AuthProvider>
           {children}
           <Analytics />
