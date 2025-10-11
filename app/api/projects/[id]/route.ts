@@ -12,9 +12,8 @@ export async function PUT(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // CORREÇÃO AQUI: Adicione 'await' para resolver a Promise
     const { id: projectId } = await params;
-    const { tool, number: phoneNumber, prompt } = await request.json();
+    const { tool, number: phoneNumber, prompt, status } = await request.json();
 
     // 1. Autenticação do usuário
     const authHeader = request.headers.get("authorization");
@@ -32,13 +31,32 @@ export async function PUT(
       );
     }
 
-    // 2. Execução da query de atualização
+    // 2. Validação do status (se fornecido)
+    const validStatuses = [
+      "pendente",
+      "em_andamento",
+      "concluido",
+      "cancelado",
+      "erro",
+    ];
+    if (status && !validStatuses.includes(status)) {
+      return NextResponse.json(
+        {
+          error: `Status inválido. Valores aceitos: ${validStatuses.join(
+            ", "
+          )}`,
+        },
+        { status: 400 }
+      );
+    }
+
+    // 3. Execução da query de atualização
     const result = await pool.query(
-      "UPDATE projects SET tool = $1, phone_number = $2, prompt = $3 WHERE id = $4 AND user_id = $5 RETURNING *",
-      [tool, phoneNumber, prompt, projectId, userId]
+      "UPDATE projects SET tool = $1, phone_number = $2, prompt = $3, status = $4 WHERE id = $5 AND user_id = $6 RETURNING *",
+      [tool, phoneNumber, prompt, status || "pendente", projectId, userId]
     );
 
-    // 3. Verificação do resultado
+    // 4. Verificação do resultado
     if (result.rowCount === 0) {
       return NextResponse.json(
         {
@@ -65,7 +83,6 @@ export async function DELETE(
   { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    // Aguarda o params antes de acessar suas propriedades
     const { id: projectId } = await params;
 
     // 1. Autenticação do usuário
@@ -84,7 +101,6 @@ export async function DELETE(
       ) as TokenPayload;
       userId = decoded.userId;
     } catch (error) {
-      // Retorna erro se o token for inválido ou expirado
       return NextResponse.json(
         { error: "Token inválido ou expirado." },
         { status: 401 }

@@ -41,8 +41,6 @@ export default function DashboardPage() {
   const [projectToDelete, setProjectToDelete] = useState<number | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  // -- DADOS PARA OS CARDS DE ESTATÍSTICA (RESTAURADOS) --
-
   const fetchProjects = async () => {
     setIsLoadingProjects(true);
     try {
@@ -98,8 +96,9 @@ export default function DashboardPage() {
     }
   };
 
-  const handleConfigureProject = (project: Project) => {
-    console.log("Configurar projeto:", project);
+  // Função corrigida - removido o parâmetro
+  const handleConfigureProject = () => {
+    console.log("Configurar projeto");
   };
 
   if (!isAuthenticated) {

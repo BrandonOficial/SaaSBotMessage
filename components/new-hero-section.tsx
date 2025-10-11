@@ -133,19 +133,22 @@ export const Logo = ({ className }: { className?: string }) => {
   return (
     <div className={cn("flex items-center gap-2", className)}>
       <div className="relative">
-        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary to-primary/60 flex items-center justify-center shadow-lg shadow-primary/20">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-            className="w-5 h-5 text-white"
-          >
-            <path d="M13 2L3 14h8l-1 8 10-12h-8l1-8z" fill="currentColor" />
-          </svg>
+        <div className=" rounded-lg  flex items-center justify-center shadow-lg shadow-primary/20">
+          <img
+            src="/logoNuvvikai.svg"
+            alt="Logo Nuuvikai"
+            style={{
+              width: "32px",
+              height: "32px",
+              borderRadius: "7px",
+              background:
+                "linear-gradient(to bottom right, var(--primary), var(--primary-60))",
+            }}
+          />
         </div>
       </div>
       <span className="text-xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-        Pointer AI
+        Nuuvik.ai
       </span>
     </div>
   );

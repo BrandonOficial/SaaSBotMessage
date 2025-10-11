@@ -2,7 +2,6 @@
 import { NextResponse } from "next/server";
 import pool from "@/lib/db";
 import jwt from "jsonwebtoken";
-// A importação de 'headers' não é mais necessária aqui!
 
 // Tipagem para o payload do token JWT
 interface TokenPayload {
@@ -21,8 +20,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // --- CORREÇÃO AQUI ---
-    // Pegando o cabeçalho diretamente do objeto 'request'
     const authHeader = request.headers.get("authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
@@ -55,9 +52,10 @@ export async function POST(request: Request) {
       );
     }
 
+    // INSERINDO COM STATUS 'pendente' POR PADRÃO
     const result = await pool.query(
-      "INSERT INTO projects (user_id, tool, phone_number, prompt) VALUES ($1, $2, $3, $4) RETURNING *",
-      [userId, tool, phoneNumber, prompt]
+      "INSERT INTO projects (user_id, tool, phone_number, prompt, status) VALUES ($1, $2, $3, $4, $5) RETURNING *",
+      [userId, tool, phoneNumber, prompt, "pendente"]
     );
 
     const newProject = result.rows[0];
@@ -72,10 +70,9 @@ export async function POST(request: Request) {
   }
 }
 
-// ROTA PARA BUSCAR OS PROJETOS (JÁ CORRIGIDA TAMBÉM)
+// ROTA PARA BUSCAR OS PROJETOS
 export async function GET(request: Request) {
   try {
-    // --- CORREÇÃO AQUI ---
     const authHeader = request.headers.get("authorization");
 
     if (!authHeader || !authHeader.startsWith("Bearer ")) {
