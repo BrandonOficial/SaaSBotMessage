@@ -1,109 +1,61 @@
 // app/api/projects/route.ts
 import { NextResponse } from "next/server";
-import pool from "@/lib/db";
-import jwt from "jsonwebtoken";
+import { authenticateRequest } from "@/lib/auth-middleware";
+import { validateProjectData } from "@/lib/validation";
+import {
+  createProject,
+  getProjectsByUserId,
+} from "@/lib/services/project.service";
+import { handleApiError } from "@/lib/error-handler";
 
-// Tipagem para o payload do token JWT
-interface TokenPayload {
-  userId: number;
-}
-
-// ROTA PARA CRIAR UM NOVO PROJETO
+/**
+ * POST - Criar um novo projeto
+ */
 export async function POST(request: Request) {
   try {
-    const { tool, number: phoneNumber, prompt } = await request.json();
-
-    if (!tool || !prompt) {
-      return NextResponse.json(
-        { error: "A ferramenta e o prompt são obrigatórios." },
-        { status: 400 }
-      );
+    // Autenticação
+    const auth = await authenticateRequest(request);
+    if (!auth.success) {
+      return auth.error!;
     }
 
-    const authHeader = request.headers.get("authorization");
+    const body = await request.json();
 
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json(
-        { error: "Não autorizado. Token não fornecido." },
-        { status: 401 }
-      );
+    // Validação
+    const validation = validateProjectData(body);
+    if (!validation.valid) {
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
-    const token = authHeader.split(" ")[1];
-    let userId;
-
-    try {
-      const decoded = jwt.verify(
-        token,
-        process.env.JWT_SECRET!
-      ) as TokenPayload;
-      userId = decoded.userId;
-    } catch (error) {
-      return NextResponse.json(
-        { error: "Token inválido ou expirado." },
-        { status: 401 }
-      );
-    }
-
-    if (!userId) {
-      return NextResponse.json(
-        { error: "ID do usuário não encontrado no token." },
-        { status: 401 }
-      );
-    }
-
-    // INSERINDO COM STATUS 'pendente' POR PADRÃO
-    const result = await pool.query(
-      "INSERT INTO projects (user_id, tool, phone_number, prompt, status) VALUES ($1, $2, $3, $4, $5) RETURNING *",
-      [userId, tool, phoneNumber, prompt, "pendente"]
-    );
-
-    const newProject = result.rows[0];
+    // Criação do projeto
+    const newProject = await createProject(auth.userId!, {
+      tool: body.tool,
+      phoneNumber: body.number,
+      prompt: body.prompt,
+    });
 
     return NextResponse.json(newProject, { status: 201 });
   } catch (error) {
-    console.error("Erro ao criar projeto:", error);
-    return NextResponse.json(
-      { error: "Erro interno do servidor ao criar o projeto." },
-      { status: 500 }
-    );
+    return handleApiError(error, "create project");
   }
 }
 
-// ROTA PARA BUSCAR OS PROJETOS
+/**
+ * GET - Buscar todos os projetos do usuário
+ */
 export async function GET(request: Request) {
   try {
-    const authHeader = request.headers.get("authorization");
-
-    if (!authHeader || !authHeader.startsWith("Bearer ")) {
-      return NextResponse.json({ error: "Não autorizado." }, { status: 401 });
+    // Autenticação
+    const auth = await authenticateRequest(request);
+    if (!auth.success) {
+      return auth.error!;
     }
 
-    const token = authHeader.split(" ")[1];
-    const decoded = jwt.verify(token, process.env.JWT_SECRET!) as TokenPayload;
-    const userId = decoded.userId;
+    // Buscar projetos
+    const projects = await getProjectsByUserId(auth.userId!);
 
-    if (!userId) {
-      return NextResponse.json({ error: "Token inválido." }, { status: 401 });
-    }
-
-    const result = await pool.query(
-      "SELECT * FROM projects WHERE user_id = $1 ORDER BY created_at DESC",
-      [userId]
-    );
-
-    return NextResponse.json(result.rows, { status: 200 });
+    return NextResponse.json(projects, { status: 200 });
   } catch (error) {
-    console.error("Erro ao buscar projetos:", error);
-    if (error instanceof jwt.JsonWebTokenError) {
-      return NextResponse.json(
-        { error: "Token inválido ou expirado." },
-        { status: 401 }
-      );
-    }
-    return NextResponse.json(
-      { error: "Erro interno ao buscar os projetos." },
-      { status: 500 }
-    );
+    return handleApiError(error, "get projects");
   }
 }

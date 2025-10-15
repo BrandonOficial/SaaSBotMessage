@@ -1,6 +1,7 @@
 "use client";
 
-import { Twitter, Github, Linkedin } from "lucide-react";
+import { Twitter, Github, Linkedin, Instagram } from "lucide-react";
+import { Logo } from "./new-hero-section";
 
 export function FooterSection() {
   return (
@@ -9,7 +10,7 @@ export function FooterSection() {
       <div className="flex flex-col justify-start items-start gap-8 p-4 md:p-8">
         <div className="flex gap-3 items-stretch justify-center">
           <div className="text-center text-foreground text-xl font-semibold leading-4">
-            Pointer
+            <Logo />
           </div>
         </div>
         <p className="text-foreground/90 text-sm font-medium leading-[18px] text-left">
@@ -17,21 +18,23 @@ export function FooterSection() {
         </p>
         <div className="flex justify-start items-start gap-3">
           <a
-            href="#"
-            aria-label="Twitter"
+            href="https://www.instagram.com/ramosbrandon_/"
+            aria-label="Instagram"
             className="w-4 h-4 flex items-center justify-center"
           >
-            <Twitter className="w-full h-full text-muted-foreground" />
+            <Instagram className="w-full h-full text-muted-foreground" />
           </a>
           <a
-            href="#"
+            href="https://github.com/BrandonOficial/SaaSBotMessage"
+            target="_blank"
             aria-label="GitHub"
             className="w-4 h-4 flex items-center justify-center"
           >
             <Github className="w-full h-full text-muted-foreground" />
           </a>
           <a
-            href="#"
+            href="https://www.linkedin.com/in/brandon-ramos-73ba27206/"
+            target="_blank"
             aria-label="LinkedIn"
             className="w-4 h-4 flex items-center justify-center"
           >
@@ -43,112 +46,45 @@ export function FooterSection() {
       <div className="grid grid-cols-2 md:grid-cols-3 gap-8 md:gap-12 p-4 md:p-8 w-full md:w-auto">
         <div className="flex flex-col justify-start items-start gap-3">
           <h3 className="text-muted-foreground text-sm font-medium leading-5">
-            Product
+            Produto
           </h3>
           <div className="flex flex-col justify-end items-start gap-2">
             <a
-              href="#"
+              href="#features-section"
               className="text-foreground text-sm font-normal leading-5 hover:underline"
             >
-              Features
+              Ferramentas
             </a>
             <a
-              href="#"
+              href="#pricing-section"
               className="text-foreground text-sm font-normal leading-5 hover:underline"
             >
-              Pricing
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Integrations
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Real-time Previews
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Multi-Agent Coding
+              Preços
             </a>
           </div>
         </div>
         <div className="flex flex-col justify-start items-start gap-3">
           <h3 className="text-muted-foreground text-sm font-medium leading-5">
-            Company
+            Recursos
           </h3>
           <div className="flex flex-col justify-center items-start gap-2">
             <a
-              href="#"
+              href="/terms"
               className="text-foreground text-sm font-normal leading-5 hover:underline"
             >
-              About us
+              Termos de uso
             </a>
             <a
-              href="#"
+              href="/docs"
               className="text-foreground text-sm font-normal leading-5 hover:underline"
             >
-              Our team
+              Documentação
             </a>
             <a
-              href="#"
+              href="/contact"
               className="text-foreground text-sm font-normal leading-5 hover:underline"
             >
-              Careers
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Brand
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Contact
-            </a>
-          </div>
-        </div>
-        <div className="flex flex-col justify-start items-start gap-3">
-          <h3 className="text-muted-foreground text-sm font-medium leading-5">
-            Resources
-          </h3>
-          <div className="flex flex-col justify-center items-start gap-2">
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Terms of use
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              API Reference
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Documentation
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Community
-            </a>
-            <a
-              href="#"
-              className="text-foreground text-sm font-normal leading-5 hover:underline"
-            >
-              Support
+              Suporte
             </a>
           </div>
         </div>

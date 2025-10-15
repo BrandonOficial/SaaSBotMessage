@@ -9,7 +9,7 @@ import { Menu, X } from "lucide-react";
 const menuItems = [
   { name: "Ferramentas", href: "#features-section" },
   { name: "Preços", href: "#pricing-section" },
-  { name: "Comentarios", href: "#testimonials-section" },
+  { name: "Documentação", href: "/docs" },
   { name: "FAQ", href: "#faq-section" },
 ];
 
@@ -148,7 +148,7 @@ export const Logo = ({ className }: { className?: string }) => {
         </div>
       </div>
       <span className="text-xl font-bold bg-gradient-to-r from-foreground to-foreground/70 bg-clip-text text-transparent">
-        Nuuvik.ai
+        Nuuvik AI
       </span>
     </div>
   );
