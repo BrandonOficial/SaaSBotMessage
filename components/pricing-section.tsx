@@ -9,51 +9,52 @@ export function PricingSection() {
 
   const pricingPlans = [
     {
-      name: "Free",
-      monthlyPrice: "$0",
-      annualPrice: "$0",
-      description: "Perfect for individuals starting their journey.",
+      name: "Teste Grátis",
+      monthlyPrice: "R$0",
+      annualPrice: "R$0",
+      description: "Perfeito para testar o poder da automação no seu negócio.",
       features: [
-        "Real-time code suggestions",
-        "Basic integration logos",
-        "Single MCP server connection",
-        "Up to 2 AI coding agents",
-        "Vercel deployments with Pointer branding",
+        "7 dias de teste",
+        "Conexão com seu WhatsApp",
+        "1 Agente de IA",
+        "Até 50 conversas com a IA",
+        "Respostas automáticas imediatas",
       ],
-      buttonText: "Get Started",
+      buttonText: "Começar o Teste",
       buttonVariant: "outline" as const,
     },
     {
       name: "Pro",
-      monthlyPrice: "$20",
-      annualPrice: "$16",
-      description: "Ideal for professionals.",
+      monthlyPrice: "R$299",
+      annualPrice: "R$249", // Oferece um desconto atrativo no plano anual
+      description:
+        "Ideal para negócios que buscam automatizar e gerar leads de forma consistente.",
       features: [
-        "Enhanced real-time previews",
-        "Unlimited integrations with custom logos",
-        "Multiple MCP server connections",
-        "Up to 10 concurrent AI coding agents",
-        "Collaborative coding with team chat",
-        "Advanced version control integrations",
-        "Priority email and chat support",
+        "Captação e Qualificação de Leads 24/7",
+        "Integração com 1 Sistema (Planilhas, CRM, etc.)",
+        "Até 5 Agentes de IA Treináveis",
+        "Relatórios Mensais de Desempenho",
+        "Suporte Prioritário via WhatsApp",
       ],
-      buttonText: "Join now",
+      buttonText: "Contratar Agora",
       buttonVariant: "default" as const,
       popular: true,
     },
     {
-      name: "Ultra",
-      monthlyPrice: "$200",
-      annualPrice: "$160",
-      description: "Tailored solutions for teams.",
+      name: "Enterprise",
+      monthlyPrice: "Custom", // Melhor que um preço fixo para forçar o contato
+      annualPrice: "Custom",
+      description:
+        "Soluções sob medida para empresas com alto volume e necessidades complexas.",
       features: [
-        "Dedicated account support",
-        "Unlimited MCP server clusters",
-        "Unlimited AI coding agents",
-        "Enterprise-grade security and compliance",
-        "Priority deployments and SLA guarantees",
+        "Tudo do plano Pro, e mais:",
+        "Gerente de Contas Dedicado",
+        "Infraestrutura de Alta Performance",
+        "Agentes de IA Ilimitados e Treinamento Avançado",
+        "Múltiplas Integrações Complexas",
+        "SLA de Disponibilidade e Suporte Garantido",
       ],
-      buttonText: "Talk to Sales",
+      buttonText: "Fale com um Especialista",
       buttonVariant: "outline" as const,
     },
   ];
@@ -172,7 +173,7 @@ export function PricingSection() {
                     </span>
                   </div>
                   <span className="text-muted-foreground text-base font-medium">
-                    /month
+                    /mes
                   </span>
                 </div>
 
@@ -197,9 +198,7 @@ export function PricingSection() {
                 <div className="text-sm font-semibold text-foreground/80 uppercase tracking-wide">
                   {plan.name === "Free"
                     ? "Included"
-                    : `Everything in ${
-                        pricingPlans[index - 1]?.name || "Free"
-                      } +`}
+                    : `Tudo do  ${pricingPlans[index - 1]?.name || "Free"} e +`}
                 </div>
                 <div className="self-stretch flex flex-col justify-start items-start gap-2.5">
                   {plan.features.map((feature) => (
